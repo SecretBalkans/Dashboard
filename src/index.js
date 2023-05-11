@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -16,6 +16,7 @@ import Admin from "layouts/Admin.js";
 import { AppContextProvider } from "./hooks/useAppContext";
 import {
   ApolloClient,
+  ApolloLink,
   ApolloProvider,
   InMemoryCache,
   gql,
@@ -25,62 +26,92 @@ import {
 import { createClient } from "graphql-ws";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 
-const link = new GraphQLWsLink(
+const monitorLink = new GraphQLWsLink(
   createClient({
-    url: process.env.REACT_APP_LOCAL_HASURA,
+    url: process.env.REACT_APP_MONITOR_HASURA,
+    reconnect: true,
   })
 );
 
-const cache = new InMemoryCache();
+const botLink = new GraphQLWsLink(
+  createClient({
+    url: process.env.REACT_APP_BOT_HASURA,
+    reconnect: true,
+  })
+);
+
 const client = new ApolloClient({
-  link,
-  cache,
+  link: ApolloLink.split(
+    (operation) => operation.getContext().clientName === "bot",
+    botLink,
+    monitorLink
+  ),
+  cache: new InMemoryCache(),
 });
 
-const DATABASE_SUBSCRIPTION = gql`
-  subscription {
-    temperature(order_by: { recorded_at: asc }) {
-      location
-      temperature
-      recorded_at
+const MONITOR_SUBSCRIPTION = gql`
+  subscription winning_arbs {
+    arb_v1(where: { amount_win: { _gt: 0 } }, order_by: { amount_win: desc }) {
+      amount_win
+      token_0
+      token_1
+      dex_0
+      dex_1
+      route_0
+      route_1
+      id
+      ts
+      last_ts
+      amount_in
+      amount_out
+      amount_bridge
     }
   }
 `;
 
+const BOT_SUBSCRIPTION = gql`
+subscription bot_subscription {
+  bot_v1 {
+    status
+		pnl
+		name
+		id
+  }
+}`
+
 const App = ({ children }) => {
-  const [botStatus, setBotStatus] = useState(false);
-  const ctx = {
-    botStatus,
-    setBotStatus,
-  };
+  const ctx = {};
 
-  useEffect(() => {
-    //fetch the bot status from the bot endpoint
-    //setBotStatus(data.status);
-    
-    console.log("botStatus fetched")
 
-  }, [botStatus])
+  const monitor = useSubscription(MONITOR_SUBSCRIPTION);
+  const bot = useSubscription(BOT_SUBSCRIPTION, {
+    context: {
+      clientName: "bot"
+    }
+  });
 
-  const { data, loading, error } = useSubscription(DATABASE_SUBSCRIPTION);
-  if (loading) return <div>Loading...</div>;
-  if (error || !data) return <div>Error! No subscription service!</div>;
 
-  console.log(data)
-  
+  if (monitor.loading) return <div>Loading monitor...</div>;
+  if (monitor.error || !monitor.data) return <div>Monitor error! No subscription service!</div>;
+
+  if (bot.loading) return <div>Loading bot...</div>;
+  if (bot.error || !bot.data) return <div>Bot error! No subscription service!</div>;
+
+  // console.log(mdata);
+  // console.log(bot.data);
+
   return (
     <AppContextProvider
       value={{
         ...ctx,
+        monitor: { ...monitor.data },
+        bot: {...bot.data}
       }}
     >
       <Routes>
         {/* add routes with layouts */}
         <Route path="/admin" element={<Admin />} />
-        {/* <Route path="/auth" component={Auth} /> */}
-        {/* add routes without layouts */}
         {/* <Route path="/landing" exact component={Landing} /> */}
-        {/* <Route path="/profile" exact component={Profile} /> */}
         {/* <Route path="/" exact component={Index} /> */}
         <Route path="*" element={<Admin />} />
       </Routes>
