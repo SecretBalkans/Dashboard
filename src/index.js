@@ -27,7 +27,7 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 
 const link = new GraphQLWsLink(
   createClient({
-    url: "ws://localhost:8080/v1/graphql",
+    url: process.env.REACT_APP_LOCAL_HASURA,
   })
 );
 
@@ -66,6 +66,8 @@ const App = ({ children }) => {
   if (loading) return <div>Loading...</div>;
   if (error || !data) return <div>Error! No subscription service!</div>;
 
+  console.log(data)
+  
   return (
     <AppContextProvider
       value={{
