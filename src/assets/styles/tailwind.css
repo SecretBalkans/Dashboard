@@ -2401,7 +2401,7 @@ select {
 
 .text-blueGray-200 {
   --tw-text-opacity: 1;
-  color: rgba(226, 232, 240, var(--tw-text-opacity));
+
 }
 
 .text-blueGray-300 {
@@ -3037,4 +3037,9 @@ select {
 }
 
 @media (min-width: 1536px) {
+}
+
+
+.hover\:tr:hover {
+  background-color: rgba(226, 232, 240, var(--tw-text-opacity));
 }

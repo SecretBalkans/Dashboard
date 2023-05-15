@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -70,32 +70,65 @@ const MONITOR_SUBSCRIPTION = gql`
 `;
 
 const BOT_SUBSCRIPTION = gql`
-subscription bot_subscription {
-  bot_v1 {
-    status
-		pnl
-		name
-		id
+  subscription bot_subscription {
+    bot_v1 {
+      status
+      pnl
+      name
+      id
+    }
   }
-}`
+`;
+
+const BALANCE_SUBSCRIPTION = gql`
+  subscription bot_balance {
+    bot_balances {
+      chain_id
+      bot_id
+      balances
+      id
+    }
+  }
+`;
 
 const App = ({ children }) => {
-  const ctx = {};
+  const [chainSelected, setChainSelected] = useState("");
 
+  const ctx = {
+    setChainSelected,
+    chainSelected,
+  };
+
+  useEffect(() => {
+    //query localbot for balance details for the chain
+    setChainSelected(chainSelected);
+  }, [chainSelected]);
 
   const monitor = useSubscription(MONITOR_SUBSCRIPTION);
+
   const bot = useSubscription(BOT_SUBSCRIPTION, {
     context: {
-      clientName: "bot"
-    }
+      clientName: "bot",
+    },
   });
 
+  const balance = useSubscription(BALANCE_SUBSCRIPTION, {
+    context: {
+      clientName: "bot",
+    },
+  });
 
   if (monitor.loading) return <div>Loading monitor...</div>;
-  if (monitor.error || !monitor.data) return <div>Monitor error! No subscription service!</div>;
+  if (monitor.error || !monitor.data)
+    return <div>Monitor error! No subscription service!</div>;
 
   if (bot.loading) return <div>Loading bot...</div>;
-  if (bot.error || !bot.data) return <div>Bot error! No subscription service!</div>;
+  if (bot.error || !bot.data)
+    return <div>Bot error! No subscription service!</div>;
+
+  if (balance.loading) return <div>Loading balance...</div>;
+  if (balance.error || !balance.data)
+    return <div>Balance error! No subscription service!</div>;
 
   // console.log(mdata);
   // console.log(bot.data);
@@ -105,7 +138,8 @@ const App = ({ children }) => {
       value={{
         ...ctx,
         monitor: { ...monitor.data },
-        bot: {...bot.data}
+        bot: { ...bot.data },
+        balances: { ...balance },
         // bot: {}
       }}
     >
