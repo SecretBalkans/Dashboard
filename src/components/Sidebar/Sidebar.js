@@ -111,16 +111,16 @@ export default function Sidebar() {
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/tables") !== -1
+                    (window.location.href.indexOf("/admin/balances") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/admin/tables"
+                  to="/admin/balances"
                 >
                   <i
                     className={
                       "fas fa-table mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/tables") !== -1
+                      (window.location.href.indexOf("/admin/balances") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
@@ -128,50 +128,27 @@ export default function Sidebar() {
                   Balances
                 </Link>
               </li>
-              {/* <li className="items-center">
+              <li className="items-center">
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/settings") !== -1
+                    (window.location.href.indexOf("/admin/runlogs") !== -1
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
-                  to="/admin/settings"
+                  to="/admin/runlogs"
                 >
                   <i
                     className={
-                      "fas fa-tools mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/settings") !== -1
+                      "fas fa-table mr-2 text-sm " +
+                      (window.location.href.indexOf("/admin/runlogs") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
                   ></i>{" "}
-                  Settings
+                  RunLogs
                 </Link>
-              </li> */}
-
-
-              {/* <li className="items-center">
-                <Link
-                  className={
-                    "text-xs uppercase py-3 font-bold block " +
-                    (window.location.href.indexOf("/admin/maps") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500")
-                  }
-                  to="/admin/maps"
-                >
-                  <i
-                    className={
-                      "fas fa-map-marked mr-2 text-sm " +
-                      (window.location.href.indexOf("/admin/maps") !== -1
-                        ? "opacity-75"
-                        : "text-blueGray-300")
-                    }
-                  ></i>{" "}
-                  Maps
-                </Link>
-              </li> */}
+              </li>
             </ul>
 
           </div>

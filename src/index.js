@@ -4,14 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/styles/tailwind.css";
-// layouts
 import Admin from "layouts/Admin.js";
-// import Auth from "layouts/Auth.js";
-
-// views without layouts
-// import Landing from "views/Landing.js";
-// import Profile from "views/Profile.js";
-// import Index from "views/Index.js";
 
 import { AppContextProvider } from "./hooks/useAppContext";
 import {
@@ -91,6 +84,7 @@ const BALANCE_SUBSCRIPTION = gql`
   }
 `;
 
+
 const App = ({ children }) => {
   const [chainSelected, setChainSelected] = useState("");
 
@@ -100,7 +94,6 @@ const App = ({ children }) => {
   };
 
   useEffect(() => {
-    //query localbot for balance details for the chain
     setChainSelected(chainSelected);
   }, [chainSelected]);
 
@@ -130,9 +123,6 @@ const App = ({ children }) => {
   if (balance.error || !balance.data)
     return <div>Balance error! No subscription service!</div>;
 
-  // console.log(mdata);
-  // console.log(bot.data);
-
   return (
     <AppContextProvider
       value={{
@@ -140,13 +130,10 @@ const App = ({ children }) => {
         monitor: { ...monitor.data },
         bot: { ...bot.data },
         balances: { ...balance },
-        // bot: {}
       }}
     >
       <Routes>
         <Route path="/admin" element={<Admin />} />
-        {/* <Route path="/landing" exact component={Landing} /> */}
-        {/* <Route path="/" exact component={Index} /> */}
         <Route path="*" element={<Admin />} />
       </Routes>
     </AppContextProvider>

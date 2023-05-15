@@ -2,9 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { useAppContext } from "hooks/useAppContext";
 
-// import TableDropdown from "components/Dropdowns/TableDropdown.js";
-
-const CardTable = ({ color }) => {
+const CardChains = ({ color }) => {
   const ctx = useAppContext();
   return (
     <>
@@ -42,16 +40,6 @@ const CardTable = ({ color }) => {
                 >
                   Chains
                 </th>
-                {/* <th
-                  className={
-                    "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left uppercase " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Transaction status
-                </th> */}
               </tr>
             </thead>
             <tbody>
@@ -78,10 +66,6 @@ const CardTable = ({ color }) => {
                       {balance.chain_id}
                     </span>
                   </th>
-
-                  {/* <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  <i className="fas fa-circle text-orange-500 mr-2"></i> pending
-                </td> */}
                 </tr>
               ))}
             </tbody>
@@ -92,12 +76,12 @@ const CardTable = ({ color }) => {
   );
 };
 
-CardTable.defaultProps = {
+CardChains.defaultProps = {
   color: "light",
 };
 
-CardTable.propTypes = {
+CardChains.propTypes = {
   color: PropTypes.oneOf(["light", "dark"]),
 };
 
-export default CardTable;
+export default CardChains;

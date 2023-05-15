@@ -3,7 +3,7 @@ import { useAppContext } from "hooks/useAppContext";
 import { fixNumber } from "utils";
 import moment from "moment";
 
-export default function CardPageVisits() {
+const CardBotDetails = () => {
   const ctx = useAppContext();
 
   return (
@@ -109,3 +109,6 @@ export default function CardPageVisits() {
     </div>
   );
 }
+
+
+export default CardBotDetails;
