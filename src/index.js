@@ -106,10 +106,10 @@ const App = ({ children }) => {
         ...ctx,
         monitor: { ...monitor.data },
         bot: {...bot.data}
+        // bot: {}
       }}
     >
       <Routes>
-        {/* add routes with layouts */}
         <Route path="/admin" element={<Admin />} />
         {/* <Route path="/landing" exact component={Landing} /> */}
         {/* <Route path="/" exact component={Index} /> */}
