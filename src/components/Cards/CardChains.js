@@ -1,9 +1,22 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useAppContext } from "hooks/useAppContext";
+import { chainsLogo } from "utils";
 
 const CardChains = ({ color }) => {
   const ctx = useAppContext();
+
+  const chains = ctx.balances.data.bot_balances.reduce((acc, cur, idx) => {
+    const col = 3;
+    const chunkIdx = Math.floor(idx / col);
+
+    if (!acc[chunkIdx]) {
+      acc[chunkIdx] = [];
+    }
+    acc[chunkIdx].push(cur.chain_id);
+    return acc;
+  }, []);
+
   return (
     <>
       <div
@@ -28,44 +41,37 @@ const CardChains = ({ color }) => {
         </div>
         <div className="block w-full overflow-x-auto">
           <table className="items-center w-full bg-transparent border-collapse">
-            <thead>
-              <tr>
-                <th
-                  className={
-                    "border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left uppercase " +
-                    (color === "light"
-                      ? "bg-blueGray-50 text-blueGray-500 border-blueGray-100"
-                      : "bg-lightBlue-800 text-lightBlue-300 border-lightBlue-700")
-                  }
-                >
-                  Chains
-                </th>
-              </tr>
-            </thead>
             <tbody>
-              {ctx.balances.data.bot_balances.map((balance) => (
+              {chains.map((chain, idx) => (
                 <tr
-                  key={balance.id}
-                  className="hover:tr"
-                  onClick={() => ctx.setChainSelected(balance.chain_id)}
+                  key={`r_${idx}`}
+                  className="flex flex-row justify-stretch ml-3 mb-5"
                 >
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center uppercase">
-                    {/* <img
-                    src={"/secretLogo.png"}
-                    className="h-12 w-12 bg-white rounded-full border"
-                    alt="..."
-                  ></img>{" "} */}
-                    <span
-                      className={
-                        "ml-3 font-bold" +
-                        +(color === "light"
-                          ? "text-blueGray-600"
-                          : "text-white")
-                      }
+                  {chain.map((c, i) => (
+                    <th
+                      key={`c_${i}`}
+                      className="border-t-0 align-middle border-l-0 
+                      border-r-0 text-xs whitespace-nowrap 
+                      uppercase hover:tr flex items-center w-full"
+                      onClick={() => ctx.setChainSelected(c)}
                     >
-                      {balance.chain_id}
-                    </span>
-                  </th>
+                      <img
+                        src={chainsLogo[c]}
+                        className="h-12 w-12 bg-white rounded-full border"
+                        alt="..."
+                      ></img>{" "}
+                      <span
+                        className={
+                          "ml-3 font-bold" +
+                          +(color === "light"
+                            ? "text-blueGray-600"
+                            : "text-white")
+                        }
+                      >
+                        {c}
+                      </span>
+                    </th>
+                  ))}
                 </tr>
               ))}
             </tbody>

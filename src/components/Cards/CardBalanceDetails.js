@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useAppContext } from "hooks/useAppContext";
+import { chainsLogo } from "utils";
 
 const CardBalanceDetails = ({ color }) => {
   const ctx = useAppContext();
@@ -26,14 +27,25 @@ const CardBalanceDetails = ({ color }) => {
       >
         <div className="rounded-t mb-0 px-4 py-3 border-0">
           <div className="flex flex-wrap items-center">
-            <div className="relative w-full px-4 max-w-full flex-grow flex-1">
+            <div className="relative w-full px-4 max-w-full">
               <h3
                 className={
-                  "font-semibold text-lg uppercase " +
+                  "font-semibold text-lg " +
                   (color === "light" ? "text-blueGray-700" : "text-white")
                 }
               >
-                 {ctx.chainSelected ? `BALANCE FOR ${ctx.chainSelected}` : " - Please select a chain for balance -"}
+                {ctx.chainSelected ? (
+                  <div className="flex items-center w-full flex flex-row justify-stretch mb-0.5 uppercase">
+                    <span>BALANCE FOR {ctx.chainSelected} </span>
+                    <img
+                      src={chainsLogo[ctx.chainSelected]}
+                      className="h-12 w-12 bg-white rounded-full border ml-3"
+                      alt="..."
+                    ></img>
+                  </div>
+                ) : (
+                  <div> - Please select a chain for balance - </div>
+                )}
               </h3>
             </div>
           </div>
