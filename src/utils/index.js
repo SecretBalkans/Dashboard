@@ -1,7 +1,10 @@
-export const fixNumber = (num) =>
+export const fixNumber = (num, {
+  minimumFractionDigits= 4,
+  maximumFractionDigits= 4,
+} = {}) =>
   (Math.round((num + Number.EPSILON) * 100) / 100).toLocaleString(undefined, {
-    minimumFractionDigits: 4,
-    maximumFractionDigits: 4,
+    minimumFractionDigits,
+    maximumFractionDigits,
   });
 
 export const chainsLogo = {

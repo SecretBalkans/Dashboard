@@ -31,7 +31,16 @@ const CardBotDetails = () => {
           <thead>
             <tr>
               <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                ID
+                DEXs
+              </th>
+              <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                Token 0 :: Token 1
+              </th>
+              <th className="px-6 bg-blueGray-50 text-orange-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                Amount win
+              </th>
+              <th className="px-6 bg-blueGray-50 text-orange-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                % win
               </th>
               <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                 Amount in
@@ -41,15 +50,6 @@ const CardBotDetails = () => {
               </th>
               <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                 Amount out
-              </th>
-              <th className="px-6 bg-blueGray-50 text-orange-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Amount win
-              </th>
-              <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                DEXs
-              </th>
-              <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Token 0 :: Token 1
               </th>
               <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                 last ts
@@ -63,13 +63,25 @@ const CardBotDetails = () => {
               <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
                 Route 1
               </th>
+              <th className="px-6 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+                ID
+              </th>
             </tr>
           </thead>
           <tbody>
             {ctx.monitor.arb_v1.map((row, i) => (
               <tr key={"i_" + i}>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {row.id}
+                  {`${row.dex_0} :: ${row.dex_1}`}
+                </td>
+                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  {`${row.token_0} :: ${row.token_1}`}
+                </td>
+                <td className="border-t-0 px-6 align-middle text-right text-orange-500 font-bold border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  {fixNumber(row.amount_win)}
+                </td>
+                <td className="border-t-0 px-6 align-middle text-right text-orange-500 font-bold border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  {fixNumber((row.amount_win / row.amount_in) * 100, { minimumFractionDigits: 2})}%
                 </td>
                 <td className="border-t-0 px-6 align-middle text-right border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {fixNumber(row.amount_in)}
@@ -79,15 +91,6 @@ const CardBotDetails = () => {
                 </td>
                 <td className="border-t-0 px-6 align-middle text-right border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {fixNumber(row.amount_out)}
-                </td>
-                <td className="border-t-0 px-6 align-middle text-right text-orange-500 font-bold border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {fixNumber(row.amount_win)}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {`${row.dex_0} :: ${row.dex_1}`}
-                </td>
-                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {`${row.token_0} :: ${row.token_1}`}
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {moment(row.last_ts).format("lll")}
@@ -100,6 +103,9 @@ const CardBotDetails = () => {
                 </td>
                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {row.route_1.join("::")}
+                </td>
+                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  {row.id}
                 </td>
               </tr>
             ))}

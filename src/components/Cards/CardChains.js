@@ -26,7 +26,7 @@ const CardChains = ({ color }) => {
         }
       >
         <div className="rounded-t mb-0 px-4 py-3 border-0">
-          <div className="flex flex-wrap items-center">
+          <div className="flex flex-wrap items-">
             <div className="relative w-full px-4 max-w-full flex-grow flex-1">
               <h3
                 className={
