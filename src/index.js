@@ -66,6 +66,8 @@ const BOT_SUBSCRIPTION = gql`
   subscription bot_subscription {
     bot_v1 {
       status
+      reported_status
+      supervisor_reported_ts
       pnl
       name
       id

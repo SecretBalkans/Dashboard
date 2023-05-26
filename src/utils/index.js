@@ -10,6 +10,8 @@ export const fixNumber = (num, {
 export const chainsLogo = {
   Injective: "/chains/injective.png",
   Axelar: "/chains/axelar.jpg",
+  Quicksilver: "/chains/qck.png",
+  Persistence: "/chains/xprt.png",
   Comdex: "/chains/comdex.jpg",
   Juno: "/chains/juno.png",
   Stride: "/chains/stride.png",

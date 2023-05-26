@@ -77,7 +77,7 @@ const CardBalanceDetails = ({ color }) => {
               </tr>
             </thead>
             <tbody>
-              {Object.keys(balance).map((k, i) => {
+              {Object.keys(balance).filter(k => +balance[k] > 0).map((k, i) => {
                 return (
                   <tr key={`r_${i}`}>
                     <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap">

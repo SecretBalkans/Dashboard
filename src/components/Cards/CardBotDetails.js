@@ -99,10 +99,10 @@ const CardBotDetails = () => {
                   {moment(row.ts).format("HH:mm ll")}
                 </td>
                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {row.route_0.join("::")}
+                  {(row.route_0?.raws || row.route_0).join('::')}
                 </td>
                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                  {row.route_1.join("::")}
+                  {(row.route_1?.raws || row.route_1).join('::')}
                 </td>
                 <td className="border-t-0 px-3 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                   {row.id}

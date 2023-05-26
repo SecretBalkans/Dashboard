@@ -4,6 +4,7 @@ import { ApolloConsumer, gql } from "@apollo/client";
 export default function CardBotStats({
   statSubtitle,
   statTitle,
+  reportedStatTitle,
   statArrow,
   statPercent,
   statPercentColor,
@@ -21,6 +22,8 @@ export default function CardBotStats({
       returning {
         id
         status
+        reported_status
+        updated_at
       }
     }
   }
@@ -39,14 +42,19 @@ export default function CardBotStats({
                 <span className="font-semibold text-xl text-blueGray-700">
                   {statTitle}
                 </span>
+                { botStatus && reportedStatTitle ? <div><h5 className="text-blueGray-400 uppercase font-bold text-xs">
+                  Worker
+                </h5>
+                <div className="font-semibold text text-blueGray-700">
+                  {reportedStatTitle.toUpperCase()}
+                </div></div> : null }
               </div>
               <button
-                className="bg-lightBlue-600 text-white active:bg-lightBlue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                className={`bg-${botStatus ? 'red': 'lightBlue'}-600 text-white active:bg-lightBlue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150`}
                 type="button"
                 onClick={() => {
                   client.mutate({
                     mutation: SET_BOT_STATUS,
-
                     context: {
                       clientName: "bot",
                     },
@@ -92,6 +100,7 @@ CardBotStats.propTypes = {
   statTitle: PropTypes.string,
   statArrow: PropTypes.oneOf(["up", "down"]),
   statPercent: PropTypes.string,
+  reportedStatTitle: PropTypes.string,
   // can be any of the text color utilities
   // from tailwindcss
   statPercentColor: PropTypes.string,
