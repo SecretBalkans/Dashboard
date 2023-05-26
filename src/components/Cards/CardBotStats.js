@@ -32,11 +32,11 @@ export default function CardBotStats({
   return (
     <ApolloConsumer>
       {(client) => (
-        <div className="relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg">
+        <div className={`${ statTitle === 'STOPPED' ? 'bg-blueGray-400': '' } relative flex flex-col min-w-0 break-words bg-white rounded mb-6 xl:mb-0 shadow-lg`}>
           <div className="flex-auto p-4">
             <div className="flex flex-wrap">
               <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-                <h5 className="text-blueGray-400 uppercase font-bold text-xs">
+                <h5 className={`${ statTitle === 'STOPPED' ? 'text-blueGray-800': 'text-blueGray-400'} uppercase font-bold text-xs`}>
                   {statSubtitle}
                 </h5>
                 <span className="font-semibold text-xl text-blueGray-700">
@@ -50,8 +50,9 @@ export default function CardBotStats({
                 </div></div> : null }
               </div>
               <button
-                className={`bg-${botStatus ? 'red': 'lightBlue'}-600 text-white active:bg-lightBlue-800 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150`}
+                className={ `${ statTitle === 'STOPPED' ? `bg-blueGray-600 text-blueGray-300` : `bg-${botStatus ? 'red': 'lightBlue'}-600 text-white  active:bg-lightBlue-800` } text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150`}
                 type="button"
+                disabled={statTitle === 'STOPPED'}
                 onClick={() => {
                   client.mutate({
                     mutation: SET_BOT_STATUS,
@@ -61,7 +62,7 @@ export default function CardBotStats({
                   });
                 }}
               >
-                {botStatus ? "STOP" : "START"} BOT
+                { statTitle === 'STOPPED' ? 'BOT N/A' : `${botStatus ? "STOP" : "START"} BOT` }
               </button>
               <div className="relative w-auto pl-4 flex-initial">
                 <div
