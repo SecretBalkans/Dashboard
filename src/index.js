@@ -58,9 +58,27 @@ const MONITOR_SUBSCRIPTION = gql`
       amount_in
       amount_out
       amount_bridge
+      height_0
+      height_1
     }
   }
 `;
+const PRICES_SUBSCRIPTION = gql`
+    subscription {
+        prices {
+            prices
+        }
+    }
+`;
+
+const HEIGHTS_SUBSCRIPTION = gql`
+    subscription heights {
+            heights {
+                dex
+                height
+                updated_at
+            }
+    }`;
 
 const BOT_SUBSCRIPTION = gql`
   subscription bot_subscription {
@@ -101,6 +119,10 @@ const App = ({ children }) => {
 
   const monitor = useSubscription(MONITOR_SUBSCRIPTION);
 
+  const heights = useSubscription(HEIGHTS_SUBSCRIPTION);
+
+  const prices = useSubscription(PRICES_SUBSCRIPTION);
+
   const bot = useSubscription(BOT_SUBSCRIPTION, {
     context: {
       clientName: "bot",
@@ -112,6 +134,7 @@ const App = ({ children }) => {
       clientName: "bot",
     },
   });
+
 
   if (monitor.loading) return <div>Loading monitor...</div>;
   if (monitor.error || !monitor.data)
@@ -132,6 +155,11 @@ const App = ({ children }) => {
         monitor: { ...monitor.data },
         bot: { ...bot.data },
         balances: { ...balance },
+        heights: heights.data?.heights.reduce((agg, {dex, height}) => {
+          agg[dex] = height;
+          return agg;
+        }, {}),
+        prices: prices.data.prices[0].prices,
       }}
     >
       <Routes>

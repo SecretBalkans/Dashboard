@@ -1,11 +1,19 @@
 export const fixNumber = (num, {
-  minimumFractionDigits= 4,
-  maximumFractionDigits= 4,
-} = {}) =>
-  (Math.round((num + Number.EPSILON) * 100) / 100).toLocaleString(undefined, {
-    minimumFractionDigits,
-    maximumFractionDigits,
-  });
+  minimumFractionNonZeroDigits = 4,
+  maximumFractionNonZeroDigits= 4,
+} = {}) => {
+  let number = Math.round((num + Number.EPSILON) * 10 ** 18) / 10 ** 18;
+  const fractionPart = ('' + number).split('.')[1];
+  if (fractionPart?.length) {
+    let leadingZeros = fractionPart.match('^0*')[0].length;
+    minimumFractionNonZeroDigits += leadingZeros;
+    maximumFractionNonZeroDigits += leadingZeros;
+  }
+  return number.toLocaleString(undefined, {
+      minimumFractionDigits: minimumFractionNonZeroDigits,
+      maximumFractionDigits: maximumFractionNonZeroDigits,
+    });
+};
 
 export const chainsLogo = {
   Injective: "/chains/injective.png",
